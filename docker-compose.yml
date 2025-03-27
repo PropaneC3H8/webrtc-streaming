@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  signaling:
+    build: ./signaling
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+
+  
+  gateway:
+    build: ./gateway
+    depends_on:
+      - signaling
+    environment:
+      - CAMERA_RTSP_URL=rtsp://camera-ip/stream
+
+
+  client:
+    build: ./client
+    ports:
+      - "8080:80"

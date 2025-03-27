@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>WebRTC Network Camera Stream</title>
+</head>
+<body>
+    <h2>Network Camera WebRTC Stream</h2>
+    <video id="video" autoplay playsinline></video>
+
+    <script>
+        const pc = new RTCPeerConnection();
+        const video = document.getElementById('video');
+        const socket = new WebSocket('ws://localhost:9000');
+
+        socket.onopen = async () => {
+            const offer = await pc.createOffer();
+            await pc.setLocalDescription(offer);
+            socket.send(JSON.stringify(offer));
+        };
+
+        socket.onmessage = async (event) => {
+            const message = JSON.parse(event.data);
+            if (message.type === 'answer') {
+                await pc.setRemoteDescription(new RTCSessionDescription(message));
+            }
+        };
+
+        pc.onicecandidate = (event) => {
+            if (event.candidate) {
+                socket.send(JSON.stringify({ type: 'candidate', candidate: event.candidate }));
+            }
+        };
+
+        pc.ontrack = (event) => {
+            video.srcObject = event.streams[0];
+        };
+    </script>
+</body>
+</html>
