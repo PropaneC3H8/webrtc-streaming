@@ -13,7 +13,7 @@ services:
     depends_on:
       - signaling
     environment:
-      - CAMERA_RTSP_URL=rtsp://camera-ip/stream
+      - CAMERA_RTSP_URL=rtsp://807e9439d5ca.entrypoint.cloud.wowza.com:1935/app-rC94792j/068b9c9a_stream2
 
 
   client:
