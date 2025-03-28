@@ -28,7 +28,7 @@ class VideoStreamTrack(MediaStreamTrack):
             return video_frame
 
 async def run():
-    rtsp_url = os.getenv("CAMERA_RTSP_URL", "rtsp://your-camera-ip/stream")
+    rtsp_url = os.getenv("CAMERA_RTSP_URL", "rtsp://807e9439d5ca.entrypoint.cloud.wowza.com:1935/app-rC94792j/068b9c9a_stream2")
     signaling = TcpSocketSignaling('signaling', 9001)
 
     await signaling.connect()
